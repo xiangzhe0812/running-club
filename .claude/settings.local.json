@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:central.sonatype.com)",
+      "WebFetch(domain:registry.npmjs.org)",
+      "Read(//private/tmp/**)",
+      "Bash(curl -sL https://registry.npmjs.org/@clerk/expo/-/expo-3.2.9.tgz)",
+      "Bash(tar -xz --wildcards '*/android/build.gradle' -O)",
+      "Bash(tar -xz -C /tmp/clerk-expo-329)",
+      "Read(//tmp/**)",
+      "Bash(curl -sL https://registry.npmjs.org/@clerk/expo/-/expo-3.2.8.tgz)",
+      "Bash(tar -xz -C /tmp/clerk-expo-328)"
+    ]
+  }
+}
