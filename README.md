@@ -1,57 +1,100 @@
-# Welcome to your Expo app 👋
+# Running Club
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A cross-platform running club app built with Expo (iOS · Android · Web).
 
-## Get started
+## Features
 
-1. Install dependencies
+- **Home** — upcoming run card, weekly metrics (distance, pace, time), club activity feed
+- **Runs** — scheduled group runs
+- **Track** — start and record a run
+- **Ranks** — leaderboard
+- **Profile** — user profile with Clerk-powered sign-out
+- **Auth** — sign-in / sign-up gate via Clerk; session stored in `expo-secure-store`
 
-   ```bash
-   npm install
-   ```
+## Tech Stack
 
-2. Start the app
+| Layer | Choice |
+|---|---|
+| Framework | Expo SDK 55 + Expo Router (file-based routing) |
+| Language | TypeScript 5.9, React 19 |
+| Auth | Clerk (`@clerk/expo`) |
+| Navigation | `expo-router/unstable-native-tabs` (iOS/Android) · `expo-router/ui` (Web) |
+| Animations | `react-native-reanimated` 4 + `react-native-worklets` |
+| Styling | `StyleSheet` + theme system (`src/constants/theme.ts`) |
+| Compiler | React Compiler enabled (no manual `useMemo`/`useCallback`) |
 
-   ```bash
-   npx expo start
-   ```
+## Getting Started
 
-In the output, you'll find options to open the app in a
+### Prerequisites
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+- Node.js 20+
+- pnpm
+- Expo CLI (`npm i -g expo`)
+- A [Clerk](https://clerk.com) publishable key
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+### Install
 
 ```bash
-npm run reset-project
+pnpm install
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+### Environment
 
-### Other setup steps
+Create a `.env` file in the project root:
 
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
+```env
+EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_...
+```
 
-## Learn more
+### Run
 
-To learn more about developing your project with Expo, look at the following resources:
+```bash
+pnpm start        # Expo dev server — press i / a / w for iOS / Android / Web
+pnpm ios          # Build and run on iOS simulator
+pnpm android      # Build and run on Android emulator
+pnpm web          # Start web server
+```
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+## Project Structure
 
-## Join the community
+```
+src/
+├── app/               # Screens (Expo Router file-based routes)
+│   ├── _layout.tsx    # Root layout — Clerk provider + tab navigator
+│   ├── index.tsx      # Home screen
+│   ├── runs.tsx       # Runs screen
+│   ├── track.tsx      # Track screen
+│   ├── ranks.tsx      # Ranks screen
+│   ├── explore.tsx    # Explore screen
+│   └── profile.tsx    # Profile screen
+├── components/        # Shared UI components
+│   ├── app-tabs.tsx         # Native tab bar (iOS/Android)
+│   ├── app-tabs.web.tsx     # Floating pill tab bar (Web)
+│   ├── animated-icon.tsx    # Reanimated splash overlay + icon
+│   ├── auth-screen.tsx      # Clerk auth gate
+│   ├── themed-text.tsx      # Theme-aware Text
+│   └── themed-view.tsx      # Theme-aware View
+├── constants/
+│   └── theme.ts       # Colors, Fonts, Spacing, BottomTabInset, MaxContentWidth
+└── hooks/
+    ├── use-theme.ts         # Returns active color palette
+    └── use-color-scheme.ts  # Platform-aware color scheme
+```
 
-Join our community of developers creating universal apps.
+## CI
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
-# running-club
+### PR Review
+
+`.github/workflows/pr-review.yml` runs on every PR (opened, updated, reopened) and posts an automated Claude code review as a PR comment.
+
+**Required secret:** add `ANTHROPIC_API_KEY` in *GitHub repo → Settings → Secrets and variables → Actions*.
+
+## Linting
+
+```bash
+pnpm lint    # ESLint via expo lint
+```
+
+## Android Package ID
+
+`com.token.erc721.runningclub`

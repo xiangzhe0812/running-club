@@ -1,0 +1,33 @@
+name: PR Review
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: anthropics/claude-code-action@beta
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          model: claude-sonnet-4-6
+          direct_prompt: |
+            Review this pull request for an Expo React Native app (running club). Focus on:
+
+            - **Correctness** — logic bugs, off-by-one errors, unhandled edge cases
+            - **Expo/React Native conventions** — follows patterns in CLAUDE.md (file-based routing, Clerk auth, NativeTabs, Reanimated, React Compiler enabled so no manual useMemo/useCallback)
+            - **Performance** — unnecessary re-renders, missing list key props, heavy computations on the JS thread
+            - **Security** — exposed secrets, insecure storage, unsafe navigation params
+            - **TypeScript** — missing types, use of `any`, improper type assertions
+            - **Test coverage** — are critical paths tested?
+
+            Be concise. Use inline comments for specific line-level feedback and a top-level summary comment for the overall assessment.

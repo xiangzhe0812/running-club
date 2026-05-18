@@ -1,0 +1,9 @@
+export const ACCENT = '#C8FF00';       // lime green brand accent
+export const BG = '#0D0A07';           // warm dark background
+export const CARD_BG = '#1A1A1A';      // card surface
+export const CARD_BORDER = '#2A2A2A';  // card / input border
+export const INPUT_BG = '#232323';     // input field background
+export const INPUT_BORDER = '#383838'; // input field border
+export const TEXT = '#FFFFFF';         // primary text
+export const TEXT_DIM = '#AAAAAA';     // secondary text
+export const TEXT_MUTED = '#7A7A7A';   // muted / placeholder text
